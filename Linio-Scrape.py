@@ -120,7 +120,7 @@ except Exception as e:
 try:
     soup = BeautifulSoup(r.text.encode('utf-8'), 'html.parser')
     print(soup.original_encoding)
-    print(soup)
+    # print(soup)
 
 except Exception as e:
     print(f'Error caught for soup: {e}')
@@ -128,21 +128,32 @@ except Exception as e:
 
     # Check all the products for their titles
 try:
-    link_tags = soup.find_all("a",{"class": "thread-link"})
+    link_tags = soup.find_all("a",{"class": "thread-title--list"})
     print(link_tags)  
 
 except Exception as e:
     print(f'Error caught for find_all: {e}')
 
+print(len(link_tags))
 
 
 
-# list_titles = []
-# for products in all_products[:]:
-#     product_title = products.text
-#     list_titles.append(product_title)
+list_titles = []
+try:
+    for products in link_tags:
+        try:
+            product_title = products.string
+            if product_title is None:
+                list_titles.append(None)
+            else:
+                list_titles.append(product_title)
+        except Exception as e:
+            print(f'Issue with finding text: {e}')
     
-# print(list_titles)
+    print(list_titles)
+
+except Exception as e:
+    print('f Returning text from list of a tags: {e}')
 
         
         
