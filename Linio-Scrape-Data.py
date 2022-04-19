@@ -24,7 +24,7 @@ user_names = []
 dates = []
 
 # loop through pages until pages run out
-while pageno < 51:
+while pageno < 50:
 
 
     try:
@@ -267,7 +267,7 @@ while pageno < 51:
                             date_of_pub = re.sub('Actualizado', '', date_of_pub.string)
                             
                         # if length is greater than 10, input 'abr 19º - current date in Spanish'
-                        if len(date_of_pub) > 10:
+                        if 'hace' in date_of_pub:
                             date_of_pub = 'abr 19º' 
 
                         #check for string year
@@ -445,7 +445,7 @@ while pageno < 51:
                             date_of_pub = re.sub('Actualizado', '', date_of_pub.string)
                             
                         # if length is greater than 10, input 'abr 19º - current date in Spanish'
-                        if len(date_of_pub) > 10:
+                        if 'hace' in date_of_pub:
                             date_of_pub = 'abr 19º' 
 
                         #check for string year
@@ -483,82 +483,9 @@ while pageno < 51:
 data_dict = {'Titles':titles, 'Degrees':degrees, 'Dates': dates,'Final_Price':prices,'Original_Price':original_prices, 'urls':urls, 'Delivery_Fees':delivery_fees,'Coupon_Codes':coupon_codes, 'Username':user_names}
 df_linio_data = pd.DataFrame.from_dict(data_dict)
 
+# df_linio_data.index += 1
 
-
-def date_correction(col):
-
-    # split the string to erase weird symbol
-    new_date =  str(col).split("º.")
-    # join them back together
-    new_date_2 = ",".join(new_date)
-    # return without trailing white space
-    return new_date_2.rstrip()
-                                                    
-
-# ----------------------------------------------------------------------------------- #
-# ---------------------------- Translate Month Sring -------------------------------- # 
-def month_translation(col):
-    if 'ene' in col:
-        return col.replace('ene','January')
-    elif 'feb' in col:
-        return col.replace('feb','February')
-    elif 'mar' in col:
-        return col.replace('mar','March')
-    elif 'abr' in col:
-        return col.replace('abr','April')
-    elif 'may' in col:
-        return col.replace('may', 'May')
-    elif 'jun' in col:
-        return col.replace('jun','June')
-    elif 'jul' in col:
-        return col.replace('jul','July')
-    elif 'ago' in col:
-        return col.replace('ago','August')
-    elif 'sep' in col:
-        return col.replace('sep','September')
-    elif 'oct' in col:
-        return col.replace('oct', 'October')
-    elif 'nov' in col:
-        return col.replace('nov','November')
-    elif 'dic' in col:
-        return col.replace('dic','December')
-    else:
-        return col
-
-
-# ----------------------------------------------------------------------------------- #
-# ------------------------ Change String to Datetime -------------------------------- # 
-def date_time(col):
-    try:
-        return datetime.strptime(col, "%B %d, %Y")
-    except:
-        return pd.NaT
-
-# ----------------------------------------------------------------------------------- #
-# ------------------------ Call Functions & Save to Excel --------------------------- # 
-
-
-# fix date
-try:
-
-# remove symbol
-    df_linio_data['Dates'] = df_linio_data.apply(lambda x: date_correction(x['Dates']), axis = 1 )
-
-# translate month
-    df_linio_data['Dates'] = df_linio_data.apply(lambda x: month_translation(x['Dates']), axis = 1 )
-
-# apply datetime format
-    df_linio_data['Dates'] = df_linio_data.apply(lambda x: date_time(x['Dates']), axis = 1 )
-except:
-    print('could not convert data')
-
-
-df_linio_data.index += 1
-
-# print(df_linio_data)
-
-# # save to csv
-
+# save to csv
 df_linio_data.to_csv('linio_data-oct-date.csv', sep=',', index=False)
 
 
