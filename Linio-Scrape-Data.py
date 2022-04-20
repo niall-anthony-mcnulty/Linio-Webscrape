@@ -24,12 +24,12 @@ user_names = []
 dates = []
 
 # loop through pages until pages run out
-while pageno < 50:
+while pageno < 51:
 
 
     try:
 
-        baseurl = "https://www.promodescuentos.com/search?q=linio&page=" + str(pageno)
+        baseurl = "https://www.promodescuentos.com/search?q=amazon&page=" + str(pageno)
          
 
         # https://curlconverter.com/ for below
@@ -187,11 +187,25 @@ while pageno < 50:
                                 print(f'issue finding final price: {e}')
                             
                             # return only digits (take out special characters to ensure int datatype)
-                            final_price = re.sub('[^0-9-?]', '', final_price)
+                            # final_price = re.sub('[^0-9-?]', '', final_price)
                             negative = '-'
                             if negative in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
+                                prices.append('Coupon')
+                            elif 'GRATIS' in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
+                                prices.append('Coupon')
+                            elif 'Gratis' in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
+                                prices.append('Coupon')
+                            elif 'Envío gratis' in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
+                                prices.append('Coupon')
+                            elif "%" in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
                                 prices.append('Coupon')
                             else:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
                                 prices.append(int(final_price))
                         else:
                             prices.append('Coupon')
@@ -366,11 +380,25 @@ while pageno < 50:
                                 print(f'issue finding final price: {e}')
                             
                             # return only digits (take out special characters to ensure int datatype)
-                            final_price = re.sub('[^0-9-?]', '', final_price)
+                            # final_price = re.sub('[^0-9-?]', '', final_price)
                             negative = '-'
                             if negative in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
+                                prices.append('Coupon')
+                            elif 'GRATIS' in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
+                                prices.append('Coupon')
+                            elif 'Gratis' in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
+                                prices.append('Coupon')
+                            elif 'Envío gratis' in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
+                                prices.append('Coupon')
+                            elif "%" in final_price:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
                                 prices.append('Coupon')
                             else:
+                                final_price = re.sub('[^0-9-?]', '', final_price)
                                 prices.append(int(final_price))
                         else:
                             prices.append('Coupon')
@@ -478,15 +506,15 @@ while pageno < 50:
     pageno += 1  
 
     
-# save to pd.Dataframe
+# Save to Dataframe 
 
 data_dict = {'Titles':titles, 'Degrees':degrees, 'Dates': dates,'Final_Price':prices,'Original_Price':original_prices, 'urls':urls, 'Delivery_Fees':delivery_fees,'Coupon_Codes':coupon_codes, 'Username':user_names}
-df_linio_data = pd.DataFrame.from_dict(data_dict)
+df_amazon_data = pd.DataFrame.from_dict(data_dict)
 
 # df_linio_data.index += 1
 
 # save to csv
-df_linio_data.to_csv('linio_data-oct-date.csv', sep=',', index=False)
+df_amazon_data.to_csv('linio_amazon-oct-date.csv', sep=',', index=False)
 
 
 

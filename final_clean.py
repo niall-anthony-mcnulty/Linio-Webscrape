@@ -2,7 +2,7 @@ import pandas as pd
 import openpyxl
 from datetime import datetime
 
-df = pd.read_csv('linio_data-oct-date.csv')
+df = pd.read_csv('linio_amazon-oct-date.csv')
 
 
 def date_correction(col):
@@ -84,4 +84,4 @@ except:
 
 
 
-df.to_excel("linio_date-oct-date.xlsx", encoding="utf-8")
+df.to_excel("amazon_date-oct-date.xlsx", encoding="utf-8")
